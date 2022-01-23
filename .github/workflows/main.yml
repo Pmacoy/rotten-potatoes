@@ -1,5 +1,5 @@
 
-name: CI
+name: CI-CD
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  CI:
     runs-on: ubuntu-latest
 
     steps:
@@ -31,6 +31,7 @@ jobs:
               pmacoy/rotten-potatoes:${{ github.run_number }}
               
   CD:
+    needs: [CI]
     runs-on: ubuntu-latest
     
     steps:
@@ -40,5 +41,5 @@ jobs:
         uses: Azure/k8s-set-context@v2
         with:
           method: kubeconfig
-          kubeconfig: ${{ secret.K8S_KUBECONFIG }}
+          kubeconfig: ${{ secret.K8S_CONFIG }}
 
